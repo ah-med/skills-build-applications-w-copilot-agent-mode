@@ -9,7 +9,14 @@ def api_root(request, format=None):
     if request.method == 'POST':
         return Response({"message": "POST request received"}, status=status.HTTP_201_CREATED)
 
-    base_url = 'http://localhost:8000/'
+    # Use the Codespace URL for API endpoints, fallback to localhost if not running in Codespace
+    codespace_url = 'https://psychic-system-r796rjvrrv9h5wrx-8000.app.github.dev/'
+    localhost_url = 'http://localhost:8000/'
+    host = request.get_host()
+    if 'psychic-system-r796rjvrrv9h5wrx-8000.app.github.dev' in host:
+        base_url = codespace_url
+    else:
+        base_url = localhost_url
     return Response({
         'users': base_url + 'api/users/?format=api',
         'teams': base_url + 'api/teams/?format=api',
